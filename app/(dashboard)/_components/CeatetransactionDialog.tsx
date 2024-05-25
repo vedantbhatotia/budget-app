@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger,DialogTitle} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 // import Input from "postcss/lib/input";
+import CategoryPicker from "./CategoryPicker";
 import { Input } from "@/components/ui/input";
 import { CreateTransactionSchema, CreateTransactionSchemaType } from "@/schema/transaction";
 interface Props{
@@ -75,6 +76,24 @@ export default function CreateTransactionDialog({trigger,type}:Props){
                             </FormItem>
                         )}
                         ></FormField>
+                        <div className="flex items-center justify-between gap-2">
+                            <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                <FormLabel>Category</FormLabel>
+                                <FormControl>
+                                    <CategoryPicker
+                                        type={type}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                Select a category for this transaction
+                                </FormDescription>
+                                </FormItem>
+                            )}
+                        /></div>
                     </form>
                 </Form>
             </DialogContent>
