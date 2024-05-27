@@ -22,10 +22,7 @@ function Navbar() {
 }
 
 const items = [
-  { label: "dashboard", link: "/" },
-  { label: "dashboard", link: "/" },
-  { label: "dashboard", link: "/" },
-  { label: "dashboard", link: "/" },
+  { label: "dashboard", link: "/" }
 ];
 
 function MobileNavbar() {
