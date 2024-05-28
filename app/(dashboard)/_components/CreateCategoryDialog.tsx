@@ -20,9 +20,10 @@ import { CreateCategory } from "../_actions/categories";
 
 interface Props {
     type: TransactionType;
+    successCallback:(category:Category)=>void
 }
 
-export default function CreateCategoryDialog({ type }: Props) {
+export default function CreateCategoryDialog({ type,successCallback}: Props) {
     const [open, setOpen] = useState(false);
     const form = useForm<CreateCategorySchemaType>({
         resolver: zodResolver(CreateCategorySchema),
@@ -43,7 +44,7 @@ export default function CreateCategoryDialog({ type }: Props) {
             // toast.success(`Category ${data.name} created successfully 🎉`, {
             //     id: "create-category",
             // });
-
+            successCallback(data);
             await queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });

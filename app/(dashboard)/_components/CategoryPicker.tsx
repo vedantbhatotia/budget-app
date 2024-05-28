@@ -1,22 +1,28 @@
 "use client";
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { TransactionType } from "@/lib/types";
-import { Category } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { CommandGroup, CommandItem, Command, CommandInput, CommandList, CommandEmpty } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import CreateCategoryDialog from "./CreateCategoryDialog";
+import { Category } from "@prisma/client";
 
 interface Props {
   type: TransactionType;
+  onChange: (value: string) => void;
 }
 
-export default function CategoryPicker({ type }: Props) {
+export default function CategoryPicker({ type, onChange }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  
+  useEffect(() => {
+    if (!value) return;
+    onChange(value);
+  }, [onChange, value]);
 
   const categoriesQuery = useQuery({
     queryKey: ["categories", type],
@@ -27,8 +33,14 @@ export default function CategoryPicker({ type }: Props) {
     },
   });
 
-  const selectedCategory = categoriesQuery.data?.find(
-    (category: Category) => category.name === value
+  const selectedCategory = categoriesQuery.data?.find((category: Category) => category.name === value);
+
+  const successCallback = useCallback(
+    (category: Category) => {
+      setValue(category.name);
+      setOpen((prev) => !prev);
+    },
+    [setValue, setOpen]
   );
 
   return (
@@ -49,14 +61,9 @@ export default function CategoryPicker({ type }: Props) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <Command onSubmit={(e) => e.preventDefault()}>
           <CommandInput placeholder="Search category..." />
-          {/* Uncomment to enable creating new categories */}
-          <CreateCategoryDialog type={type} />
+          <CreateCategoryDialog type={type} successCallback={successCallback} />
           {categoriesQuery.isLoading ? (
             <div>Loading...</div>
           ) : categoriesQuery.isError ? (
