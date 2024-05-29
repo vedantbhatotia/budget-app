@@ -21,6 +21,7 @@ export async function GET(request:Request){
         queryParams.data.from,
         queryParams.data.to
     );
+    return Response.json(stats);
 }
 export type GetBalanceStatsResponseType = Awaited<
   ReturnType<typeof getBalanceStats>
