@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Overview from "./_components/Overview";
+import History from "./_components/History";
 import CreateTransactionDialog from "./_components/CeatetransactionDialog";
 export default async function Page(){
     const user = await currentUser();
@@ -51,7 +52,7 @@ export default async function Page(){
             </div>
           </div>
           <Overview userSettings={userSettings} />
-          {/* <History userSettings={userSettings} /> */}
+          <History userSettings={userSettings} />
           </div>
     );
 }
