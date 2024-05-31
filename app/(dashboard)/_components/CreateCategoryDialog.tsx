@@ -8,7 +8,9 @@ import { Category } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { PlusSquare, CircleOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import toast from "sonner";
+// import toast from "sonner";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { useForm } from "react-hook-form";
@@ -41,9 +43,8 @@ export default function CreateCategoryDialog({ type,successCallback}: Props) {
                 type,
             });
 
-            // toast.success(`Category ${data.name} created successfully 🎉`, {
-            //     id: "create-category",
-            // });
+            toast.success(`Category ${data.name} created successfully 🎉`);
+
             successCallback(data);
             await queryClient.invalidateQueries({
                 queryKey: ["categories"],
@@ -51,11 +52,9 @@ export default function CreateCategoryDialog({ type,successCallback}: Props) {
 
             setOpen(false);
         },
-        // onError: () => {
-        //     toast.error("Something went wrong", {
-        //         id: "create-category",
-        //     });
-        // },
+        onError: () => {
+            toast.error("Something went wr");
+        },
     })
     const onSubmit = useCallback((values:CreateCategorySchemaType)=>{
         mutate(values)

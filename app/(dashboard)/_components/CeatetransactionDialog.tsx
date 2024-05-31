@@ -47,6 +47,9 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
   const { mutate, isPending} = useMutation({
     mutationFn: CreateTransaction,
     onSuccess: () => {
+      toast.success("Transaction created successfully 🎉", {
+        id: "create-transaction",
+      });
       form.reset({
         type,
         description: "",
